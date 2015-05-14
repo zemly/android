@@ -9,8 +9,5 @@
     <string name="功能">type</string>
     <string name="高位地址">type</string>
     <string name="查询">type</string>
-    <string name="低位地址">type</string>
-    <string name="读取高位">type</string>
-    <string name="读取低位">type</string>
 
 </resources>

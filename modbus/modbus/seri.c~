@@ -1,9 +1,5 @@
 #include     <stdio.h>      /*标准输入输出定义*/
 #include     <stdlib.h>     /*标准函数库定义*/
-#include <errno.h>
-#include <unistd.h>     
-#include <cutils/log.h>
-#include <cutils/atomic.h>
 #include     <unistd.h>     /*Unix 标准函数定义*/
 #include     <sys/types.h> 
 #include     <sys/stat.h>  
@@ -192,7 +188,7 @@ int set_Parity(int fd,int databits,int stopbits,int parity)
 {
          struct termios options;
          if  ( tcgetattr( fd,&options)  !=  0) {
-                    ALOGE("Modbus Stub: SetupSerial 1");    
+                   perror("SetupSerial 1");    
                    return(FALSE); 
          }
          options.c_cflag &= ~CSIZE;
@@ -208,7 +204,7 @@ int set_Parity(int fd,int databits,int stopbits,int parity)
                    options.c_cflag |= CS8;
                    break;  
          default:   
-                    ALOGE("Modbus Stub: Unsupported data size"); return (FALSE); 
+                   fprintf(stderr,"Unsupported data size/n"); return (FALSE); 
          }
 switch (parity)
 {  
@@ -233,7 +229,7 @@ switch (parity)
              options.c_cflag &= ~PARENB;
                    options.c_cflag &= ~CSTOPB;break; 
          default:  
-                    ALOGE("Modbus Stub: Unsupported parity/n");   
+                   fprintf(stderr,"Unsupported parity/n");   
                    return (FALSE); 
          } 
 /* 设置停止位*/ 
@@ -246,7 +242,7 @@ switch (stopbits)
                    options.c_cflag |= CSTOPB; 
             break;
          default:   
-                     ALOGE("Modbus Stub: Unsupported stop bits/n"); 
+                    fprintf(stderr,"Unsupported stop bits/n"); 
                     return (FALSE);
 }
 /* Set input parity option */
@@ -257,7 +253,7 @@ options.c_cc[VTIME] = Vtime; /* 设置超时15 seconds*/
 options.c_cc[VMIN] = Vmin; /* define the minimum bytes data to be readed*/
 if (tcsetattr(fd,TCSANOW,&options) != 0)  
 {
-          ALOGE("Modbus Stub: SetupSerial 3");  
+         perror("SetupSerial 3");  
          return (FALSE); 
 }
 return (TRUE); 
@@ -274,7 +270,7 @@ int OpenDev(char *Dev)
         //| O_NOCTTY | O_NDELAY         
          if (-1 == fd)        
          {                        
-                    ALOGE("Modbus Stub: Can't Open Serial Port");
+                   perror("Can't Open Serial Port");
                    return -1;            
          }      
          else  
@@ -291,7 +287,7 @@ void getcardinfo(char *buff){
          fd = OpenDev(dev);
          set_speed(fd,9600);
          if (set_Parity(fd,8,1,'N') == FALSE)  {
-                    ALOGE("Modbus Stub: Set Parity Error/n");
+                   printf("Set Parity Error/n");
                    //return -1;
          }
 
@@ -303,14 +299,14 @@ void getcardinfo(char *buff){
          input[4] = 0x00;
          input[5] = 0x25;
          len = FormFrame(input,output);
-          ALOGE("Modbus Stub: the data is going to send:%s\n",output);
+         printf("the data is going to send:%s\n",output);
          nwrite = write(fd, output, len);
-         if(nwrite < len)  ALOGE("Modbus Stub: write data error:%d",nwrite);
+         if(nwrite < len) printf("write data error:%d",nwrite);
          for(i = 0; i < 17; i ++)
          {
             nread = read(fd, &output[i], 1);
          }
-             ALOGE("Modbus Stub: %s",output);
+            printf("%s",output);
          while (1) //循环读取数据
          {  
                    count=0;
@@ -319,8 +315,8 @@ void getcardinfo(char *buff){
                    {
                             if(nread = read(fd, tempbuff, 13));
                             {
-                                 ALOGE("Modbus Stub: /nLen %d/n",nread);
-                                 ALOGE("Modbus Stub: %s\n",tempbuff);
+                                printf("/nLen %d/n",nread);
+                                printf("%s\n",tempbuff);
                             }
 //                            else printf("cant get 13 buf\n");
                             if(count==13)

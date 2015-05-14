@@ -140,7 +140,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/editText3"
         android:layout_toRightOf="@+id/editText3"
-        android:text="@string/低位地址"
+        android:text="低位地址"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
@@ -150,7 +150,7 @@
         android:layout_alignBottom="@+id/editText5"
         android:layout_alignParentLeft="true"
         android:layout_alignRight="@+id/textView3"
-        android:text="@string/读取高位"
+        android:text="读取高位"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
@@ -159,7 +159,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/editText6"
         android:layout_toLeftOf="@+id/editText6"
-        android:text="@string/读取低位"
+        android:text="读取低位"
         android:textAppearance="?android:attr/textAppearanceSmall" />
     
 

@@ -36,6 +36,15 @@ static jint modbus_readReg(JNIEnv *env, jobject clazz, jcharArray value, jint le
     char *str = new char [40];
 
     ret = modbus_device->read_reg(modbus_device, str, len);
+    if(ret == -1) {
+        ALOGE("modbus number return error");
+        free(str);
+        return -1;
+    } else if(ret == 0) {
+        ALOGE("modbus read null");
+        free(str);
+        return 0;
+    }
     jchar *pArray = (jchar *)calloc(ret, sizeof(jchar));
     if(pArray == NULL) {
         ALOGE("Modbus JNI: calloc pArray error.");
@@ -58,6 +67,7 @@ static jint modbus_readReg(JNIEnv *env, jobject clazz, jcharArray value, jint le
     }
 
     ALOGI("Modbus JNI: read %s from device reg.",str);
+out:
     free(str);
     str = NULL;
     return len;
